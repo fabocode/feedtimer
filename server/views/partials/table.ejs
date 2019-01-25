@@ -1,0 +1,27 @@
+<% for(let i =0;i<config.days_of_week.length;i++){ %>
+    <% for(let j =0;j<config.days_of_week[i].cycles.length;j++){ %>
+        <tr class="tr-shadow">
+            <td class="text-center align-middle"><%= config.days_of_week[i].day %></td>
+            <td class="text-center"><%= config.days_of_week[i].cycles[j].start %></td>
+            <td class="text-center"><%= config.days_of_week[i].cycles[j].duration %> s</td>
+            <td class="text-center">
+                <%if(config.days_of_week[i].cycles[j].status){%>
+                    <i class="zmdi zmdi-check zmdi-hc-3x" style="color:green"></i>
+                <%}else{%>
+                    <i class="zmdi zmdi-close zmdi-hc-3x" style="color:red"></i>
+                <%}%>
+            </td>
+            <td>
+                <div class="table-data-feature">
+                    <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
+                        <i class="zmdi zmdi-edit"></i>
+                    </button>
+                    <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
+                        <i class="zmdi zmdi-delete"></i>
+                    </button>
+                </div>
+            </td>
+        </tr>
+        <tr class="spacer"></tr>
+    <%}%>
+<%}%>
