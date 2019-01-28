@@ -1,26 +1,32 @@
-from gpiozero import LED
+import doorSystem as door
+import readData as get
 from time import sleep 
 
-openDoor = LED(27)
-closeDoor = LED(22)
+'''
+while True:
+    date = get.time()[0]    # get current system date
+    time = get.time()[1]    # get current system time
+    get.jsonData()
+    #print("time: {} and date: {}".format(time, date))
 
-def feed(time):
-    openDoor.on()   # open the door
-    closeDoor.off() # don't close the door
-    sleep(time)
-    openDoor.off()
-    closeDoor.on()
     sleep(1)
-    closeDoor.off()
-
-def close(time):
-    openDoor.off()  # don't open the door
-    closeDoor.on()  # close the door 
-    sleep(time)
-    closeDoor.off()
+    '''
+workWeek = get.jsonData()
+currentTime = get.currentTime()
+currentCycle = 0
 
 while True:
-    feed(2)     # feed 1 second 'open the door'
-    #close(1)    # close the door
-    
-    
+    currentTime.time()  # read time data
+    workWeek.jsonData() # read json file
+    print("days: {}, \nstart: {}, \nduration: {}, \nstatus: {}, \nnumber of cycles: {}".format(workWeek.day2Check, workWeek.cycleInit, workWeek.cycleTime, workWeek.dayStatus, workWeek.numCycles))    
+    print("day2check {} and current day {}".format(workWeek.day2Check[currentCycle], currentTime.nameDay))
+    #if currentCycle < workWeek.numCycles and workWeek.day2Check[currentCycle] == currentTime.nameDay: # while currentCycle is less than maximum number of cycles
+    #   if()
+    #   #print("it's sunday")
+    #   #print("days: {}, \nstart: {}, \nduration: {}, \nstatus: {}, \nnumber of cycles: {}".format(workWeek.day2Check, workWeek.cycleInit, workWeek.cycleTime, workWeek.dayStatus, workWeek.numCycles))
+    #   ##print("day: {} date: {} and time {}".format(currentTime.nameDay, currentTime.date, currentTime.timeStamp))
+    #   #currentCycle += 1
+    #else:
+    #    print("not anymore")
+    sleep(1)    
+    workWeek.cleanDataList()
