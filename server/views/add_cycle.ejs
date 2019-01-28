@@ -34,7 +34,8 @@
     <link href="../css/theme.css" rel="stylesheet" media="all">
     <link rel="Stylesheet" href="../css/cleanslate.css" />
     <link rel="Stylesheet" href="../css/jquery.weekLine.css" />
-    <link rel="stylesheet" type="text/css" href="../css/timepicki.css">
+    <link href="../css/timingfield.css" rel="stylesheet">
+
 </head>
 
 <body class="animsition">
@@ -194,27 +195,31 @@
                             <label>
                                 Set Day for the Cycle:
                                 <span id="weekCal"></span>
+                                <span style="display:none; color:red" id="select_days">Please select the days of the week for this cycle</span>
                             </label>
                         </div>
                         <div class="col-md-3">
                             <label>
                                 Set Hour for the Cycle: 
-                                <input type="text" name="namepicker" class="time_element" style="border-color:#383838 !important;border: 1px !important;border-style: solid !important;"/>
+                                <input type="text" name="namepicker" class="timepicker" style="border-color:#383838 !important;border: 1px !important;border-style: solid !important;"/>
                             </label>
                         </div>
                         <div class="col-md-3">
                             <label>
                                 Set Cycle Duration (in Seconds): 
-                                  <input type="number" value="0" style="width:8ch !mportant;border-color:#383838 !important;border: 1px !important;border-style: solid !important;" step="0.10" max="999" min="0">
+                                  <input type="number" value="0" style="width:8ch !mportant;border-color:#383838 !important;border: 1px !important;border-style: solid !important;" step="0.10" max="999" min="0" id="new_duration">
                             </label>
                         </div>
-                        <div class="col-md-3">
-                            <label style="margin:0px !important;">
+                        <div class="col-md-3 align-middle">
+                            <label style="margin:0px !important;" class="align-middle">
                                 Set Cycle Status:
-                                    <i class="zmdi zmdi-check zmdi-hc-3x" style="color:green" id="cycle_status" status="true" onclick="change_status()"></i>
                             </label>
-                        
-                            
+                                    <i class="zmdi zmdi-check zmdi-hc-3x" style="" id="cycle_status" status="true" onclick="change_status()"></i>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button type="button" class="btn btn-success" onclick="save_cycle()">Save</button>
+                            </div>
                         </div>
                     </div>
                     
@@ -265,13 +270,72 @@
     <script src="../vendor/chartjs/Chart.bundle.min.js"></script>
     <script src="../vendor/select2/select2.min.js">
     </script>
+    <script src="../js/timingfield.js"></script>
     <script src="../js/jquery.weekLine.min.js"></script> 
     <!-- Main JS-->
     <script src="../js/main.js"></script>
-    <script src="../js/weekLine.ctrl.js"></script>
     <script src="../js/time.ctrl.js"></script>
-    <script src="../js/timepicki.js"></script>
-    <script src="../js/timepicki.ctrl.js"></script>
+    <script>
+    let get_cycles=[];
+    let hour;
+    $("input.timepicker").timingfield({
+            timeFormat:'HH:mm:ss'
+
+        });
+
+        $("#weekCal").weekLine({
+        mousedownSel: false,
+        onChange: function () {
+            let get_cycles = [];
+                $("#selectedDays").html(
+                        $(this).weekLine('getSelected')
+                );
+
+                for(let i =0;i<$('.selectedDay').length;i++){
+                    get_cycles.push(document.getElementsByClassName("selectedDay").item(i).innerHTML);
+                }
+        }
+        });
+
+        function save_cycle(){
+            for(let i =0;i<$('.selectedDay').length;i++){
+                get_cycles.push(document.getElementsByClassName("selectedDay").item(i).innerHTML);
+            }
+            hour = document.getElementById("new_hour").value + ":" + document.getElementById("new_minutes").value + ":" + document.getElementById("new_seconds").value;
+            if(get_cycles.length == 0){
+                document.getElementById("select_days").setAttribute("style","display:block");
+            }else{
+            $.ajax({
+                url:"/device/new_cycle",
+                method:"POST",
+                data:{
+                    day:get_cycles,
+                    hour:hour,
+                    duration:document.getElementById("new_duration").value,
+                    status:document.getElementById("cycle_status").getAttribute("class")
+                }
+            }).done(function(data){
+                get_cycles = [];
+                document.getElementById("select_days").setAttribute("style","display:none");
+            }).fail(function(err){
+                console.log(err);
+                get_cycles =[];
+            })
+        }
+        }
+
+        function change_status(){
+            let aux = document.getElementById("cycle_status").getAttribute("class");
+            console.log(aux);
+            if(aux.includes("check")){
+              console.log("here");
+                document.getElementById("cycle_status").setAttribute("class","zmdi zmdi-close zmdi-hc-3x")
+            }else{
+                document.getElementById("cycle_status").setAttribute("class","zmdi zmdi-check zmdi-hc-3x")
+            }
+            
+        }
+    </script>
 </body>
 
 </html>
