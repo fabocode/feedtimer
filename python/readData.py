@@ -5,25 +5,25 @@ from datetime import datetime
 class jsonData():
     day2Check = []
     dayStatus = []
-    cycleInit = []
-    cycleTime = []
+    cycleStart = []
+    cycleDuration = []
+    cycleID = []
     numCycles = 0
+    currentCycle = 0
 
     def cleanDataList(self):
+        del jsonData.cycleID[:]
         del jsonData.day2Check[:]
         del jsonData.dayStatus[:]
-        del jsonData.cycleInit[:]
-        del jsonData.cycleTime[:]
+        del jsonData.cycleStart[:]
+        del jsonData.cycleDuration[:]
         jsonData.numCycles = 0
 
     def jsonData(self):
-        #global numCycles
-        print("classing ")
         fullPath = "/home/pi/feedtimer/server/device_config/device_config.json"
         if not os.path.exists(fullPath):
             print("no json file")
-        else:
-            print("here's a json file")
+        else:   # if a json file exists
             with open(fullPath) as jsonFile:
                 data = json.load(jsonFile)
                 for day in data['days_of_week']:
@@ -36,9 +36,10 @@ class jsonData():
                                 pass
                             else:
                                 #print("it's true!")
+                                jsonData.cycleID.append(int(cycle['ID']))
                                 jsonData.day2Check.append(str(day['day']))
-                                jsonData.cycleInit.append(str(cycle['start']))
-                                jsonData.cycleTime.append(float(cycle['duration']))
+                                jsonData.cycleStart.append(str(cycle['start']))
+                                jsonData.cycleDuration.append(float(cycle['duration']))
                                 jsonData.dayStatus.append(status)
                                 jsonData.numCycles += 1
 
@@ -47,14 +48,19 @@ class jsonData():
                                 #print("it's unicode")
                                 if status == 'true':
                                     #print("it's unicode but true")
+                                    jsonData.cycleID.append(int(cycle['ID']))
                                     jsonData.day2Check.append(str(day['day']))
-                                    jsonData.cycleInit.append(str(cycle['start']))
-                                    jsonData.cycleTime.append(float(cycle['duration']))
+                                    jsonData.cycleStart.append(str(cycle['start']))
+                                    jsonData.cycleDuration.append(float(cycle['duration']))
                                     jsonData.dayStatus.append(status)
                                     jsonData.numCycles += 1
                                 elif status == 'false':
                                     print("it's unicode but false")
-            #print("days: {}, \nstart: {}, \nduration: {}, \nstatus: {}, \nnumber of cycles: {}".format(day2Check, cycleInit, cycleTime ,dayStatus, numCycles))
+            print("ID: {} \ndays: {}, \nstart: {}, \nduration: {}, \nstatus: {}, \nnumber of cycles: {}".format(jsonData.cycleID, jsonData.day2Check, jsonData.cycleStart, jsonData.cycleDuration, jsonData.dayStatus, jsonData.numCycles))
+
+    def compareTimes(self, time1, time2):
+        FMT = '%H:%M:%S'
+        return str(datetime.strptime(time2, FMT) - datetime.strptime(time1, FMT))
 
 class currentTime():
     nameDay = 0
@@ -70,3 +76,4 @@ class currentTime():
         currentTime.timeStamp = currentTime.timeStamp[0].split(" ")
         currentTime.date = currentTime.timeStamp[0]
         currentTime.timeStamp = currentTime.timeStamp[1]
+        #print(currentTime.timeStamp)
