@@ -27,9 +27,10 @@ function set_cycle_status(req, res, next){
             
             for(let i = 0;i<obj.days_of_week.length;i++){
                 if(obj.days_of_week[i].day == day){
-                    for(let j = 0;j<obj.days_of_week[i].duration.length;j++){
-                        if(obj.days_of_week[i].duration[j].ID == cycle_ID){
-                            obj.days_of_week[i].duration[j].status = new_status;
+                    console.log(obj.days_of_week[i]);
+                    for(let j = 0;j<obj.days_of_week[i].cycles.length;j++){
+                        if(obj.days_of_week[i].cycles[j].ID == cycle_ID){
+                            obj.days_of_week[i].cycles[j].status = new_status;
                             save_config(JSON.stringify(obj));
                         }
                     }
@@ -60,9 +61,9 @@ function set_cycle_duration(req, res, next){
             
             for(let i = 0;i<obj.days_of_week.length;i++){
                 if(obj.days_of_week[i].day == day){
-                    for(let j = 0;j<obj.days_of_week[i].duration.length;j++){
-                        if(obj.days_of_week[i].duration[j].ID == cycle_ID){
-                            obj.days_of_week[i].duration[j].duration = new_duration;
+                    for(let j = 0;j<obj.days_of_week[i].cycles.length;j++){
+                        if(obj.days_of_week[i].cycles[j].ID == cycle_ID){
+                            obj.days_of_week[i].cycles[j].duration = new_duration;
                             save_config(JSON.stringify(obj));
                         }
                     }

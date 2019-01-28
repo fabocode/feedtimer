@@ -34,6 +34,7 @@
     <link href="../css/theme.css" rel="stylesheet" media="all">
     <link rel="Stylesheet" href="../css/cleanslate.css" />
     <link rel="Stylesheet" href="../css/jquery.weekLine.css" />
+    <link rel="stylesheet" type="text/css" href="../css/timepicki.css">
 </head>
 
 <body class="animsition">
@@ -165,7 +166,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-6 col-lg-3">
-                            <a href="/add/cycle">
+                            <a href="/">
                                 <div class="statistic__item statistic__item--blue">
                                     <h2 class="number">Go back to the Dashboard</h2>
                                     <div class="icon">
@@ -186,7 +187,39 @@
                 </div>
             </section>
 
-            
+            <section class="statistic statistic2">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label>
+                                Set Day for the Cycle:
+                                <span id="weekCal"></span>
+                            </label>
+                        </div>
+                        <div class="col-md-3">
+                            <label>
+                                Set Hour for the Cycle: 
+                                <input type="text" name="namepicker" class="time_element" style="border-color:#383838 !important;border: 1px !important;border-style: solid !important;"/>
+                            </label>
+                        </div>
+                        <div class="col-md-3">
+                            <label>
+                                Set Cycle Duration (in Seconds): 
+                                  <input type="number" value="0" style="width:8ch !mportant;border-color:#383838 !important;border: 1px !important;border-style: solid !important;" step="0.10" max="999" min="0">
+                            </label>
+                        </div>
+                        <div class="col-md-3">
+                            <label style="margin:0px !important;">
+                                Set Cycle Status:
+                                    <i class="zmdi zmdi-check zmdi-hc-3x" style="color:green" id="cycle_status" status="true" onclick="change_status()"></i>
+                            </label>
+                        
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </section>
 
             <!-- COPYRIGHT-->
             <section class="p-t-60 p-b-20">
@@ -237,6 +270,8 @@
     <script src="../js/main.js"></script>
     <script src="../js/weekLine.ctrl.js"></script>
     <script src="../js/time.ctrl.js"></script>
+    <script src="../js/timepicki.js"></script>
+    <script src="../js/timepicki.ctrl.js"></script>
 </body>
 
 </html>
