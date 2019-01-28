@@ -9,15 +9,11 @@ closeDoor = LED(22)
 def feed(time):
     openDoor.on()   # open the door
     closeDoor.off() # don't close the door
-    sleep(time)
-    #print("hello")
-    #openDoor.off()
-    #closeDoor.on()
-    #sleep(1)
-    #closeDoor.off()
+    sleep(1 + time)
+    openDoor.off()
 
-def close(time):
-    openDoor.off()  # don't open the door
+def close():
+    timeOff = 1
     closeDoor.on()  # close the door 
-    sleep(time)
+    sleep(timeOff)
     closeDoor.off()
