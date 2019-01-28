@@ -83,7 +83,8 @@ function new_cycle(req, res, next){
     let day = req.body.day;
     let hour = req.body.hour;
     let duration = req.body.duration;
-    let is_activated = req.body.status
+    let is_activated = req.body.status;
+    console.log(req.body);
     fs.readFile('device_config/device_config.json', 'utf8', function (err, data) {
         if (err){
             console.log(err);
@@ -93,9 +94,16 @@ function new_cycle(req, res, next){
         if(data){
             obj = JSON.parse(data);
             
-
+            if(is_activated.includes("check")){
+                is_activated = true;
+            }else{
+                is_activated = false;
+            }
+            console.log(is_activated);
             for(let i = 0;i<obj.days_of_week.length;i++){
-                if(obj.days_of_week[i].day == day){
+                for(let j = 0;j<obj.days_of_week.length;j++)
+                if(obj.days_of_week[i].day == day[j]){
+                    console.log("entered");
                     obj.days_of_week[i].cycles.push({
                                                     ID:obj.days_of_week[i].cycles.length,
                                                     start:hour,
@@ -103,9 +111,10 @@ function new_cycle(req, res, next){
                                                     status:is_activated,
 
                     })
-                    save_config(obj);       
+                       
                 }
             }
+            save_config(obj);    
             res.sendStatus(200);
             return;
         }else{
@@ -149,5 +158,6 @@ function get_config(req, res, next){
 
 function save_config(new_config){
     fs.writeFileSync('device_config/device_config.json', JSON.stringify(new_config));
+    console.log("saved");
     return;
 }
