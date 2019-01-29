@@ -6,9 +6,9 @@
             <td class="text-center"><%= config.days_of_week[i].cycles[j].duration %> s</td>
             <td class="text-center">
                 <%if(config.days_of_week[i].cycles[j].status){%>
-                    <i class="zmdi zmdi-check zmdi-hc-3x" style="color:green"></i>
+                    <i class="zmdi zmdi-check zmdi-hc-3x" style="color:green" onclick="change_status(<%=config.days_of_week[i].cycles[j].ID%>, '<%=config.days_of_week[i].day%>', this)"></i>
                 <%}else{%>
-                    <i class="zmdi zmdi-close zmdi-hc-3x" style="color:red"></i>
+                    <i class="zmdi zmdi-close zmdi-hc-3x" style="color:red" onclick="change_status(<%=config.days_of_week[i].cycles[j].ID%>, '<%=config.days_of_week[i].day%>', this)"></i>
                 <%}%>
             </td>
             <td>
@@ -16,7 +16,7 @@
                     <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
                         <i class="zmdi zmdi-edit"></i>
                     </button>
-                    <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
+                    <button class="item" data-toggle="tooltip" data-placement="top" title="Delete"  onclick="delete_cycle(<%=config.days_of_week[i].cycles[j].ID%>, '<%=config.days_of_week[i].day%>')">
                         <i class="zmdi zmdi-delete"></i>
                     </button>
                 </div>

@@ -221,9 +221,9 @@
                                                 <td class="text-center"><%= config.days_of_week[i].cycles[j].duration %> s</td>
                                                 <td class="text-center">
                                                     <%if(config.days_of_week[i].cycles[j].status){%>
-                                                        <i class="zmdi zmdi-check zmdi-hc-3x" style="color:green"></i>
+                                                        <i class="zmdi zmdi-check zmdi-hc-3x" style="color:green" onclick="change_status(<%=config.days_of_week[i].cycles[j].ID%>, '<%=config.days_of_week[i].day%>', this)"></i>
                                                     <%}else{%>
-                                                        <i class="zmdi zmdi-close zmdi-hc-3x" style="color:red"></i>
+                                                        <i class="zmdi zmdi-close zmdi-hc-3x" style="color:red" onclick="change_status(<%=config.days_of_week[i].cycles[j].ID%>, '<%=config.days_of_week[i].day%>', this)"></i>
                                                     <%}%>
                                                 </td>
                                                 <td>
@@ -232,7 +232,7 @@
                                                         <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
                                                             <i class="zmdi zmdi-edit"></i>
                                                         </button>
-                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Delete" onclick="delete_cycle(<%=config.days_of_week[i].cycles[j].ID%>, '<%=config.days_of_week[i].day%>')">
                                                             <i class="zmdi zmdi-delete"></i>
                                                         </button>
 
@@ -300,6 +300,44 @@
     <script src="js/main.js"></script>
     <script src="js/weekLine.ctrl.js"></script>
     <script src="js/time.ctrl.js"></script>
+    <script>
+        function delete_cycle(ID, day){
+            $.ajax({
+                url:'/device/delete',
+                method:'DELETE',
+                data:{
+                    cycle_ID:ID,
+                    day:day
+                }
+            }).done(function(data){
+                location.reload();
+            }).fail(function(err){
+                console.log(err);
+            })
+        }
+
+        function change_status(ID, day, elem){
+            let change_status;
+            if(elem.getAttribute("class").includes("check")){
+                change_status = false;
+            }else{
+                change_status = true;
+            }
+            $.ajax({
+                url:'/device/set_status',
+                method:'PATCH',
+                data:{
+                    cycle_ID:ID,
+                    day:day,
+                    new_status:change_status
+                }
+            }).done(function(data){
+                location.reload();
+            }).fail(function(err){
+                console.log(err);
+            })
+        }
+    </script>
 </body>
 
 </html>

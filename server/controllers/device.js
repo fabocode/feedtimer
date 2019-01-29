@@ -8,14 +8,14 @@ module.exports = {
     new_cycle,
     get_config,
     set_cycle_status,
-    set_cycle_duration
+    set_cycle_duration,
+    delete_cycle
 }
 
-function set_cycle_status(req, res, next){
-    let obj;
-    let day = req.body.day;
+function delete_cycle(req, res, next){
     let cycle_ID = req.body.cycle_ID;
-    let new_status = req.body.new_status;
+    let day = req.body.day;
+    let obj;
     fs.readFile('device_config/device_config.json', 'utf8', function (err, data) {
         if (err){
             console.log(err);
@@ -30,8 +30,73 @@ function set_cycle_status(req, res, next){
                     console.log(obj.days_of_week[i]);
                     for(let j = 0;j<obj.days_of_week[i].cycles.length;j++){
                         if(obj.days_of_week[i].cycles[j].ID == cycle_ID){
-                            obj.days_of_week[i].cycles[j].status = new_status;
-                            save_config(JSON.stringify(obj));
+                            obj.days_of_week[i].cycles.splice(j,1);
+                            
+                            for(let k = 0;k<obj.days_of_week[i].cycles.length;k++){
+                                
+                                if(k != obj.days_of_week[i].cycles[j].ID){
+                                    obj.days_of_week[i].cycles[j].ID = k;
+                                    
+                                }
+                            }
+                            console.log(obj.days_of_week[i].cycles[j]);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            for(let i = 0;i<obj.days_of_week.length;i++){
+                if(obj.days_of_week[i].day == day){
+                    console.log(obj.days_of_week[i]);
+                    for(let j = 0;j<obj.days_of_week[i].cycles.length;j++){
+                        for(let k = 0;k<obj.days_of_week[i].cycles.length;k++){
+                            
+                            if(k != obj.days_of_week[i].cycles[j].ID){
+                                obj.days_of_week[i].cycles[j].ID = k;
+                                
+                            }
+                        }
+                            console.log(obj.days_of_week[i].cycles[j]);
+                            break;
+                        }
+                    }
+            }
+            
+            save_config(obj);
+            res.sendStatus(200);
+            return;
+        }else{
+            res.sendStatus(400)
+            return;
+        }
+    });
+}
+
+function set_cycle_status(req, res, next){
+    let obj;
+    let day = req.body.day;
+    let cycle_ID = req.body.cycle_ID;
+    let new_status = req.body.new_status;
+
+    console.log(req.body);
+    fs.readFile('device_config/device_config.json', 'utf8', function (err, data) {
+        if (err){
+            console.log(err);
+            res.sendStatus(500);
+            return;
+        }
+        if(data){
+            obj = JSON.parse(data);
+            
+            for(let i = 0;i<obj.days_of_week.length;i++){
+                if(obj.days_of_week[i].day == day){
+                    for(let j = 0;j<obj.days_of_week[i].cycles.length;j++){
+                        if(obj.days_of_week[i].cycles[j].ID == cycle_ID){
+                            console.log(obj.days_of_week[i].cycles[j].status);
+                            obj.days_of_week[i].cycles[j].status = JSON.parse(new_status);
+                            console.log(obj.days_of_week[i].cycles[j].status);
+                            save_config(obj);
                         }
                     }
                 }
@@ -108,7 +173,7 @@ function new_cycle(req, res, next){
                                                     ID:obj.days_of_week[i].cycles.length,
                                                     start:hour,
                                                     duration:duration,
-                                                    status:is_activated,
+                                                    status:JSON.parse(is_activated),
 
                     })
                        
@@ -157,6 +222,7 @@ function get_config(req, res, next){
 }
 
 function save_config(new_config){
+    JSON.stringify(new_config)
     fs.writeFileSync('device_config/device_config.json', JSON.stringify(new_config));
     console.log("saved");
     return;
