@@ -13,9 +13,11 @@
             </td>
             <td>
                 <div class="table-data-feature">
-                    <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
-                        <i class="zmdi zmdi-edit"></i>
-                    </button>
+                <a href="/edit/cycle/<%=config.days_of_week[i].day%>/<%=config.days_of_week[i].cycles[j].ID%>">
+                <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
+                    <i class="zmdi zmdi-edit"></i>
+                </button>
+                </a>
                     <button class="item" data-toggle="tooltip" data-placement="top" title="Delete"  onclick="delete_cycle(<%=config.days_of_week[i].cycles[j].ID%>, '<%=config.days_of_week[i].day%>')">
                         <i class="zmdi zmdi-delete"></i>
                     </button>

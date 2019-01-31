@@ -9,7 +9,8 @@ module.exports = {
     get_config,
     set_cycle_status,
     set_cycle_duration,
-    delete_cycle
+    delete_cycle,
+    edit_cycle
 }
 
 function delete_cycle(req, res, next){
@@ -129,7 +130,50 @@ function set_cycle_duration(req, res, next){
                     for(let j = 0;j<obj.days_of_week[i].cycles.length;j++){
                         if(obj.days_of_week[i].cycles[j].ID == cycle_ID){
                             obj.days_of_week[i].cycles[j].duration = new_duration;
-                            save_config(JSON.stringify(obj));
+                            save_config(obj);
+                        }
+                    }
+                }
+            }
+            res.sendStatus(200);
+            return;
+        }else{
+            res.sendStatus(400)
+            return;
+        }
+    });
+}
+
+function edit_cycle(req, res, next){
+    let obj;
+    let day = req.body.day;
+    let cycle_ID = req.body.cycle_ID;
+    let new_duration = req.body.new_duration;
+    let new_hour = req.body.new_hour;
+    let new_status = req.body.new_status;
+    if(new_status.includes("check")){
+        new_status = true;
+    }else{
+        new_status = false;
+    }
+    fs.readFile('device_config/device_config.json', 'utf8', function (err, data) {
+        if (err){
+            console.log(err);
+            res.sendStatus(500);
+            return;
+        }
+        if(data){
+            obj = JSON.parse(data);
+            
+            for(let i = 0;i<obj.days_of_week.length;i++){
+                if(obj.days_of_week[i].day == day){
+                    for(let j = 0;j<obj.days_of_week[i].cycles.length;j++){
+                        if(obj.days_of_week[i].cycles[j].ID == cycle_ID){
+
+                            obj.days_of_week[i].cycles[j].duration = new_duration;
+                            obj.days_of_week[i].cycles[j].start = new_hour;
+                            obj.days_of_week[i].cycles[j].status = JSON.parse(new_status);
+                            save_config(obj);
                         }
                     }
                 }

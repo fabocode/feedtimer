@@ -7,7 +7,6 @@ function get_time(){
         method:"GET",
         url:"/time"
     }).done(function(data){
-        console.log(data);
         document.getElementById("real_time").innerHTML="";
         document.getElementById("real_time").innerHTML=data;
         tt = timer_function();

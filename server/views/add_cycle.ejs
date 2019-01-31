@@ -5,9 +5,9 @@
     <!-- Required meta tags-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="au theme template">
-    <meta name="author" content="Hau Nguyen">
-    <meta name="keywords" content="au theme template">
+    <meta name="description" content="Door Opening system">
+    <meta name="author" content="AIOTIK C.A.">
+    <meta name="keywords" content="Door system iot">
 
     <!-- Title Page-->
     <title>Door Dashboard</title>
@@ -144,8 +144,8 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12">
-                            <h1 class="title-4 align-middle" style="padding-top:1.5%">Welcome back
-                                <span>Weedie!</span>
+                            <h1 class="title-4 align-middle" style="padding-top:1.5%">
+                                <span>Add a Cycle</span>
                             </h1>
                             <hr class="line-seprate">
                         </div>
@@ -177,12 +177,14 @@
                             </a>
                         </div>
                         <div class="col-md-6 col-lg-3">
-                            <div class="statistic__item statistic__item--gray">
-                                <h2 class="number">Change System Hour</h2>
-                                <div class="icon">
-                                    <i class="zmdi zmdi-time"></i>
+                            <a href="/change_system_hour">
+                                <div class="statistic__item statistic__item--gray">
+                                    <h2 class="number">Change System Hour</h2>
+                                    <div class="icon">
+                                        <i class="zmdi zmdi-time"></i>
+                                    </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -191,38 +193,38 @@
             <section class="statistic statistic2">
                 <div class="container">
                     <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-lg-3">
                             <label>
                                 Set Day for the Cycle:
                                 <span id="weekCal"></span>
                                 <span style="display:none; color:red" id="select_days">Please select the days of the week for this cycle</span>
                             </label>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-lg-3">
                             <label>
                                 Set Hour for the Cycle: 
                                 <input type="text" name="namepicker" class="timepicker" style="border-color:#383838 !important;border: 1px !important;border-style: solid !important;"/>
                             </label>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-lg-3">
                             <label>
                                 Set Cycle Duration (in Seconds): 
                                   <input type="number" value="0" style="width:8ch !mportant;border-color:#383838 !important;border: 1px !important;border-style: solid !important;" step="0.10" max="999" min="0" id="new_duration">
                             </label>
                         </div>
-                        <div class="col-md-3 align-middle">
+                        <div class="col-lg-3 align-middle">
                             <label style="margin:0px !important;" class="align-middle">
                                 Set Cycle Status:
                             </label>
                                     <i class="zmdi zmdi-check zmdi-hc-3x" style="" id="cycle_status" status="true" onclick="change_status()"></i>
                         </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <button type="button" class="btn btn-success" onclick="save_cycle()">Save</button>
-                            </div>
+                        
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12" style="margin-top:5%">
+                            <button type="button" class="btn btn-success btn-block" onclick="save_cycle()">Save</button>
                         </div>
                     </div>
-                    
                 </div>
             </section>
 
@@ -316,7 +318,7 @@
                 }
             }).done(function(data){
                 get_cycles = [];
-                document.getElementById("select_days").setAttribute("style","display:none");
+                location.replace("/");
             }).fail(function(err){
                 console.log(err);
                 get_cycles =[];
@@ -326,9 +328,7 @@
 
         function change_status(){
             let aux = document.getElementById("cycle_status").getAttribute("class");
-            console.log(aux);
             if(aux.includes("check")){
-              console.log("here");
                 document.getElementById("cycle_status").setAttribute("class","zmdi zmdi-close zmdi-hc-3x")
             }else{
                 document.getElementById("cycle_status").setAttribute("class","zmdi zmdi-check zmdi-hc-3x")

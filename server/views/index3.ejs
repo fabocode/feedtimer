@@ -5,9 +5,9 @@
     <!-- Required meta tags-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="au theme template">
-    <meta name="author" content="Hau Nguyen">
-    <meta name="keywords" content="au theme template">
+    <meta name="description" content="Door Opening system">
+    <meta name="author" content="AIOTIK C.A.">
+    <meta name="keywords" content="Door system iot">
 
     <!-- Title Page-->
     <title>Door Dashboard</title>
@@ -175,7 +175,7 @@
                             </a>
                         </div>
                         <div class="col-md-6 col-lg-3">
-                            <a href="/time/change_system_hour">
+                            <a href="/change_system_hour">
                                 <div class="statistic__item statistic__item--gray">
                                     <h2 class="number">Change System Hour</h2>
                                     <div class="icon">
@@ -192,11 +192,14 @@
             <section class="p-t-20">
                 <div class="container">
                     <div class="row">
-                        <div class="col-md-3">
-                            <h3 class="title-5 m-b-35">Cycles on:</h3>
+                        <div class="col-md-2">
+                            <h3 class="title-5 m-b-35">Cycles on: </h3>
                         </div>
-                        <div class="col-md-5">
+                        <div class="col-md-3">
                             <span id="weekCal"></span>
+                        </div>
+                        <div class="col-md-1">
+                            <i class="zmdi zmdi-help" data-toggle="tooltip" data-placement="bottom" title="Select one to search on a specific day. You can select mutiple days. Select none to see all cycles"></i>
                         </div>
                     </div>
                     <div class="row">
@@ -208,7 +211,7 @@
                                             <th class="text-center">Day</th>
                                             <th class="text-center">Opening Hour</th>
                                             <th class="text-center">Duration (On Seconds)</th>
-                                            <th class="text-center">Is Active</th>
+                                            <th class="text-center">Is Active (Click on it to change it)</th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -228,10 +231,11 @@
                                                 </td>
                                                 <td>
                                                     <div class="table-data-feature">
-
+                                                        <a href="/edit/cycle/<%=config.days_of_week[i].day%>/<%=config.days_of_week[i].cycles[j].ID%>">
                                                         <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
                                                             <i class="zmdi zmdi-edit"></i>
                                                         </button>
+                                                        </a>
                                                         <button class="item" data-toggle="tooltip" data-placement="top" title="Delete" onclick="delete_cycle(<%=config.days_of_week[i].cycles[j].ID%>, '<%=config.days_of_week[i].day%>')">
                                                             <i class="zmdi zmdi-delete"></i>
                                                         </button>
