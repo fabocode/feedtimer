@@ -286,7 +286,7 @@
         function save_cycle(){
             let date = datepicker.datepicker().val();
             hour = document.getElementById("new_hour").value + ":" + document.getElementById("new_minutes").value + ":" + document.getElementById("new_seconds").value;
-            /*$.ajax({
+            $.ajax({
                 url:"/system/change_time",
                 method:"POST",
                 data:{
@@ -299,7 +299,7 @@
             }).fail(function(err){
                 console.log(err);
                 get_cycles =[];
-            }) */
+            }) 
         }
 
         function change_status(){
