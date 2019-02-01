@@ -271,18 +271,26 @@
     <script src="../js/time.ctrl.js"></script>
     <script src="../js/moment.js"></script>
     <script src="../js/jquery-ui.js"></script>
+    <script src="../js/input.ctrl.js"></script>
     <script>
     let get_cycles=[];
     let hour;
-  
+    $( document ).ready(function() {
+        document.getElementById("new_hour").value = <%=parseInt(hour)%>
+        document.getElementById("new_minutes").value = <%=parseInt(minute)%>
+        document.getElementById("new_seconds").value = <%=parseInt(second)%>
+        weekcal.weekLine("setSelected", '<%=day%>');
+        console.log('<%=day%>');
+    })
 
-    let datepicker = $('#datepicker').datepicker({ dateFormat: "yy-m-dd" });
+    let datepicker = $('#datepicker').datepicker({ dateFormat: "yy/m/dd" });
+    datepicker.datepicker("setDate",'<%=year%>/<%=month%>/<%=day%>');
 
     $("input.timepicker").timingfield({
-        timeFormat:'HH:mm:ss'
-
+        timeFormat:'HH:mm:ss',
+        width:300
     });
-
+    
         function save_cycle(){
             let date = datepicker.datepicker().val();
             hour = document.getElementById("new_hour").value + ":" + document.getElementById("new_minutes").value + ":" + document.getElementById("new_seconds").value;
