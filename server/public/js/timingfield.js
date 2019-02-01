@@ -237,7 +237,7 @@
         <div class="timingfield_hours">\
             <button type="button" class="timingfield_next btn btn-default btn-xs btn-block" tabindex="-1"><span class="zmdi zmdi-plus"></span></button>\
             <div class="input-group">\
-                <input type="text" class="form-control" id="new_hour">\
+                <input type="text" class="form-control" id="new_hour" onclick="clear_onclick(this)" onblur="auto_fill(this)">\
                 <span class="input-group-addon"></span>\
             </div>\
             <button type="button" class="timingfield_prev btn btn-default btn-xs btn-block" tabindex="-1"><span class="zmdi zmdi-minus"></span></button>\
@@ -245,7 +245,7 @@
         <div class="timingfield_minutes">\
             <button type="button" class="timingfield_next btn btn-default btn-xs btn-block" tabindex="-1"><span class="zmdi zmdi-plus"></span></button>\
             <span class="input-group">\
-                <input type="text" class="form-control" id="new_minutes">\
+                <input type="text" class="form-control" id="new_minutes" onclick="clear_onclick(this)" onblur="auto_fill(this)">\
                 <span class="input-group-addon"></span>\
             </span>\
             <button type="button" class="timingfield_prev btn btn-default btn-xs btn-block" tabindex="-1"><span class="zmdi zmdi-minus"></span></button>\
@@ -253,7 +253,7 @@
         <div class="timingfield_seconds">\
             <button type="button" class="timingfield_next btn btn-default btn-xs btn-block" tabindex="-1"><span class="zmdi zmdi-plus"></span></button>\
             <span class="input-group">\
-                <input type="text" class="form-control" id="new_seconds">\
+                <input type="text" class="form-control" id="new_seconds" onclick="clear_onclick(this)" onblur="auto_fill(this)">\
                 <span class="input-group-addon"></span>\
             </span>\
             <button type="button" class="timingfield_prev btn btn-default btn-xs btn-block" tabindex="-1"><span class="zmdi zmdi-minus"></span></button>\

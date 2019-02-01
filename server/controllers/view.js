@@ -11,7 +11,25 @@ module.exports = {
 }
 
 function change_system_hour(req, res, next){
-    res.render('../views/change_system_hour.ejs');
+    var d = new Date(),
+        month = '' + (d.getMonth() + 1),
+        hours = d.getHours(),
+        minutes = d.getMinutes(),
+        seconds = d.getSeconds(),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    res.render('../views/change_system_hour.ejs',{
+        day:day,
+        month:month,
+        year:year,
+        hour:hours,
+        minute:minutes,
+        second:seconds
+    });
 }
 
 function dashboard(req, res, next){
@@ -69,6 +87,8 @@ function edit_cycle(req, res, next){
                                 status:obj.days_of_week[i].cycles[j].status,
                                 ID:obj.days_of_week[i].cycles[j].ID
                             });
+                            console.log("finished");
+                            return;
                             break;
                         }
                     }

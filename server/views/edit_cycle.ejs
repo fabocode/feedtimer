@@ -220,10 +220,10 @@
                                     <i class="zmdi zmdi-close zmdi-hc-3x" style="" id="cycle_status" status="false" onclick="change_status()"></i>
                                 <%}%>
                         </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <button type="button" class="btn btn-success" onclick="save_cycle()">Save</button>
-                            </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12" style="margin-top:5%">
+                            <button type="button" class="btn btn-success btn-block" onclick="save_cycle()">Save</button>
                         </div>
                     </div>
                     
@@ -279,6 +279,7 @@
     <!-- Main JS-->
     <script src="../../../js/main.js"></script>
     <script src="../../../js/time.ctrl.js"></script>
+    <script src="../../../js/input.ctrl.js"></script>
     <script>
     let get_cycles=[];
     let hour;
@@ -288,14 +289,13 @@
         document.getElementById("new_minutes").value = <%=parseInt(minutes)%>
         document.getElementById("new_seconds").value = <%=parseInt(seconds)%>
         weekcal.weekLine("setSelected", '<%=day%>');
-        console.log('<%=day%>');
     })
 
 
     $("input.timepicker").timingfield({
-            timeFormat:'HH:mm:ss'
-
-        });
+            timeFormat:'HH:mm:ss',
+            width:300
+    });
 
         weekcal = $("#weekCal").weekLine({
         mousedownSel: false,
