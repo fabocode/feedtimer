@@ -1,68 +1,10 @@
 import json
 import os
 from datetime import datetime
+from operator import itemgetter
 
-class jsonData():
-    day2Check = []
-    dayStatus = []
-    cycleStart = []
-    cycleDuration = []
-    cycleID = []
-    numCycles = 0
-    currentCycle = 0
 
-    def cleanDataList(self):
-        del jsonData.cycleID[:]
-        del jsonData.day2Check[:]
-        del jsonData.dayStatus[:]
-        del jsonData.cycleStart[:]
-        del jsonData.cycleDuration[:]
-        jsonData.numCycles = 0
-
-    def jsonData(self):
-        fullPath = "/home/pi/feedtimer/server/device_config/device_config.json"
-        if not os.path.exists(fullPath):
-            print("no json file")
-        else:   # if a json file exists
-            with open(fullPath) as jsonFile:
-                data = json.load(jsonFile)
-                for day in data['days_of_week']:
-                    #print(day['day'])
-                    for cycle in day['cycles']:
-                        status = cycle['status']
-                        if type(status) == bool:
-                            #print("it's bool {}".format(status))
-                            if status == False:
-                                pass
-                            else:
-                                #print("it's true!")
-                                jsonData.cycleID.append(int(cycle['ID']))
-                                jsonData.day2Check.append(str(day['day']))
-                                jsonData.cycleStart.append(str(cycle['start']))
-                                jsonData.cycleDuration.append(float(cycle['duration']))
-                                jsonData.dayStatus.append(status)
-                                jsonData.numCycles += 1
-
-                        else:
-                            if isinstance(status, unicode) == True: #or type(status) == str:
-                                #print("it's unicode")
-                                if status == 'true':
-                                    #print("it's unicode but true")
-                                    jsonData.cycleID.append(int(cycle['ID']))
-                                    jsonData.day2Check.append(str(day['day']))
-                                    jsonData.cycleStart.append(str(cycle['start']))
-                                    jsonData.cycleDuration.append(float(cycle['duration']))
-                                    jsonData.dayStatus.append(status)
-                                    jsonData.numCycles += 1
-                                elif status == 'false':
-                                    print("it's unicode but false")
-            print("ID: {} \ndays: {}, \nstart: {}, \nduration: {}, \nstatus: {}, \nnumber of cycles: {}".format(jsonData.cycleID, jsonData.day2Check, jsonData.cycleStart, jsonData.cycleDuration, jsonData.dayStatus, jsonData.numCycles))
-
-    def compareTimes(self, time1, time2):
-        FMT = '%H:%M:%S'
-        return str(datetime.strptime(time2, FMT) - datetime.strptime(time1, FMT))
-
-class currentTime():
+class currentTime():    # function that provides the current name day, date, and time
     nameDay = 0
     date = 0
     timeStamp = 0
@@ -76,4 +18,68 @@ class currentTime():
         currentTime.timeStamp = currentTime.timeStamp[0].split(" ")
         currentTime.date = currentTime.timeStamp[0]
         currentTime.timeStamp = currentTime.timeStamp[1]
-        #print(currentTime.timeStamp)
+
+class jsonData():
+    checkDay = []   # contains all the week data
+    day2Check = []  # contains the data from an specific day 
+    cycleStart = [] # contains the time for the cycle to start in HH:MM:SS
+    cycleDuration = []  # time that will going to hold the 'on' task
+
+    def cleanDataList(self):    # clean the lists for new incoming data
+        del jsonData.checkDay[:]
+        del jsonData.day2Check[:]
+        del jsonData.cycleStart[:]
+        del jsonData.cycleDuration[:]
+        
+    def saveData(self, d):  # save data for comparison 
+        for i in d:
+            jsonData.cycleStart.append(i["start"])  # set each input into the start list 
+            jsonData.cycleDuration.append(i["duration"]) # set each input into the duration list
+        print "day {} \nstart {} \nand duration {}, \n".format(jsonData.day2Check, jsonData.cycleStart, jsonData.cycleDuration)
+
+    def jsonData(self): # function to read, parse and sort the json file
+        fullPath = "/home/pi/feedtimer/server/device_config/device_config.json" # path file to read
+        if not os.path.exists(fullPath):    # if a json file not exists
+            print("no json file")
+        else:   # if a json file exists
+            with open(fullPath) as jsonFile:    # open the json fie
+                data = json.load(jsonFile)  # save json string into 'data' variable
+                sortedData = dict(data)
+                sortedData['days_of_week'] = sorted(data['days_of_week'], key=lambda x : x['cycles'], reverse=False)
+                for day in data['days_of_week']:
+                    for cycle in day['cycles']:     # iterate through each cycle 
+                        status = cycle['status']
+                        if type(status) == bool:    # if the status is boolean
+                            if status == False:     # if the status object is false
+                                pass
+                            else:
+                                currentTime().time()    # read the current time
+                                if currentTime().nameDay == str(day['day']):    # if the current day matches with one day of the available cycles
+                                    jsonData.day2Check.append(str(day['day']))
+                                    jsonData.checkDay.append(cycle)
+                                    
+                        else:
+                            if isinstance(status, unicode) == True: # if the status value is unicode 
+                                if status == 'true':    # if the status is 'true'  
+                                    currentTime().time()    # read the current time
+                                    if currentTime().nameDay == str(day['day']):
+                                        jsonData.day2Check.append(str(day['day']))
+                                        jsonData.checkDay.append(cycle)
+            
+            if len(jsonData.checkDay) > 0:  # if the list is greater than 0
+                jsonData.checkDay = sorted(jsonData.checkDay, key=itemgetter('start'))  # sort the list by 'start'
+                for i in jsonData.checkDay: # iterate through each element to convert from unicode to str
+                    i["duration"] = i.pop('duration')
+                    i["duration"] = str(i["duration"])
+                    i["start"] = i.pop('start')
+                    i["start"] = str(i["start"])
+                self.saveData(jsonData.checkDay)    # save data into lists for analysis
+                print("starts {} \nduration {}".format(jsonData.cycleStart, jsonData.cycleDuration))
+            else:   # there's no plan for today
+                currentTime().time()
+                print "no plans for {}".format(currentTime().nameDay)
+
+    def compareTimes(self, time1, time2):   # function to compare two time strings HH:MM:SS
+        FMT = '%H:%M:%S'    # format for the output 
+        return str(datetime.strptime(time2, FMT) - datetime.strptime(time1, FMT))
+
