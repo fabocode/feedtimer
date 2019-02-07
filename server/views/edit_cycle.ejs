@@ -312,10 +312,28 @@
         });
 
         function save_cycle(){
+            let new_hour = String(document.getElementById("new_hour").value),
+            new_minutes = String(document.getElementById("new_minutes").value),
+            new_seconds = String(document.getElementById("new_seconds").value);
+
             for(let i =0;i<$('.selectedDay').length;i++){
                 get_cycles.push(document.getElementsByClassName("selectedDay").item(i).innerHTML);
             }
-            hour = document.getElementById("new_hour").value + ":" + document.getElementById("new_minutes").value + ":" + document.getElementById("new_seconds").value;
+            
+
+            if(new_hour.length==1){
+                new_hour = "0"+new_hour;
+            }
+
+            if(new_minutes.length==1){
+                new_minutes = "0"+new_minutes;
+            }
+
+            if(new_seconds.length==1){
+                new_seconds = "0"+new_seconds;
+            }
+
+            hour = new_hour + ":" + new_minutes + ":" + new_seconds;
             if(get_cycles.length == 0){
                 document.getElementById("select_days").setAttribute("style","display:block");
             }else{

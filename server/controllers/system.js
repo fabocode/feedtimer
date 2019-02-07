@@ -5,7 +5,7 @@ module.exports={
 }
 
 function change_hour(req, res, next){
-    let date = req.body.date;
+    let date = req.body.day;
     let hour = req.body.hour;
     console.log('date -s "'+date+' '+hour+'"');
     shell.exec('sudo date -s "'+date+' '+hour+'"')
