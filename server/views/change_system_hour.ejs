@@ -258,7 +258,6 @@
     </div>
 
     <!-- Jquery JS-->
-    <script src="../vendor/jquery-3.2.1.min.js"></script>
     <script src="../vendor/jquery-1.12.4.min.js"></script>
     <!-- Bootstrap JS-->
     <script src="../vendor/bootstrap-4.1/popper.min.js"></script>
@@ -289,9 +288,6 @@
     <script>
     let get_cycles=[];
     let hour;
-    $( document ).ready(function() {
-        weekcal.weekLine("setSelected", '<%=day%>');
-    })
 
     let datepicker = $('#datepicker').datepicker({ dateFormat: "yy/m/dd" });
     datepicker.datepicker("setDate",'<%=year%>/<%=month%>/<%=day%>');
@@ -309,13 +305,15 @@
         function save_cycle(){
             let date = datepicker.datepicker().val();
             hour = document.getElementById("new_hour").value+":00";
+
             if(hour){
+                console.log(hour);
                 $.ajax({
                     url:"/system/change_time",
                     method:"POST",
                     data:{
                         day:date,
-                        hour:new_hour
+                        hour:hour
                     }
                 }).done(function(data){
                     location.replace("/");
