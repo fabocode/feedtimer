@@ -7,7 +7,12 @@ module.exports = {
     dashboard,
     add_cycle,
     edit_cycle,
-    change_system_hour
+    change_system_hour,
+    system_test
+}
+
+function system_test(req,res,next){
+    res.render('../views/testing_module.ejs')
 }
 
 function change_system_hour(req, res, next){

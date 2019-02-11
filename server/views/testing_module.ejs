@@ -35,6 +35,8 @@
     <link rel="Stylesheet" href="../css/cleanslate.css" />
     <link rel="Stylesheet" href="../css/jquery.weekLine.css" />
     <link href="../css/picktim.css" rel="stylesheet">
+    <link href="../css/jquery-ui.css" rel="stylesheet">
+
 
 </head>
 
@@ -145,7 +147,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <h1 class="title-4 align-middle" style="padding-top:1.5%">
-                                <span>Add a Cycle</span>
+                                <span>Change the Hour of the System</span>
                             </h1>
                             <hr class="line-seprate">
                         </div>
@@ -177,21 +179,21 @@
                             </a>
                         </div>
                         <div class="col-md-6 col-lg-3">
-                            <a href="/change_system_hour">
+                            <a href="/add/cycle">
                                 <div class="statistic__item statistic__item--gray">
-                                    <h2 class="number">Change System Hour</h2>
+                                    <h2 class="number">Add a New Cycle</h2>
                                     <div class="icon">
-                                        <i class="zmdi zmdi-time"></i>
+                                        <i class="zmdi zmdi-plus"></i>
                                     </div>
                                 </div>
                             </a>
                         </div>
                         <div class="col-md-6 col-lg-3">
-                            <a href="/system_test">
+                            <a href="/change_system_hour">
                                 <div class="statistic__item statistic__item--green">
-                                    <h2 class="number">Test Opening System</h2>
+                                    <h2 class="number">Change System Hour</h2>
                                     <div class="icon">
-                                        <i class="zmdi zmdi-alert-circle-o"></i>
+                                        <i class="zmdi zmdi-time"></i>
                                     </div>
                                 </div>
                             </a>
@@ -203,39 +205,20 @@
             <section class="statistic statistic2">
                 <div class="container">
                     <div class="row">
-                        <div class="col-lg-3">
-                            <label>
-                                Set Day for the Cycle:
-                                <span id="weekCal"></span>
-                                <span style="display:none; color:red" id="select_days">Please select the days of the week for this cycle</span>
-                            </label>
-                        </div>
-                        <div class="col-lg-2">
-                            <label>
-                                Set Hour for the Cycle: 
-                                    <div class="timepicker" id="timepicker" style="border-color:#383838 !important;border: 1px !important;border-style: solid !important;"></div>
-                            </label>
-                        </div>
-                        <div class="col-md-1">
-                            <i class="zmdi zmdi-help" data-toggle="tooltip" data-placement="right" title="Click on AM or PM to toggle between them"></i>
-                        </div>
-                        <div class="col-lg-3">
-                            <label>
-                                Set Cycle Duration (in Seconds): 
-                                  <input type="number" value="0" style="width:8ch !mportant;border-color:#383838 !important;border: 1px !important;border-style: solid !important;" step="0.10" max="999" min="0" id="new_duration">
-                            </label>
-                        </div>
-                        <div class="col-lg-3 align-middle">
-                            <label style="margin:0px !important;" class="align-middle">
-                                Set Cycle Status:
-                            </label>
-                                    <i class="zmdi zmdi-check zmdi-hc-3x" style="" id="cycle_status" status="true" onclick="change_status()"></i>
-                        </div>
-                        
+                    <div class="col-lg-4">
+                    </div>
+                    <div class="col-lg-4">
+                        <label>
+                            Set Test Duration (in Seconds): 
+                              <input type="number" value="0" style="width:8ch !mportant;border-color:#383838 !important;border: 1px !important;border-style: solid !important;" step="0.10" max="999" min="0" id="test_duration">
+                        </label>
+                    </div>  
+                    <div class="col-lg-4">
+                    </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-12" style="margin-top:5%">
-                            <button type="button" class="btn btn-success btn-block" onclick="save_cycle()">Save</button>
+                            <button type="button" class="btn btn-success btn-block" onclick="save_cycle()">Begin Test</button>
                         </div>
                     </div>
                 </div>
@@ -291,71 +274,22 @@
     <!-- Main JS-->
     <script src="../js/main.js"></script>
     <script src="../js/time.ctrl.js"></script>
+    <script src="../js/moment.js"></script>
+    <script src="../js/jquery-ui.js"></script>
     <script src="../js/input.ctrl.js"></script>
     <script>
-    let get_cycles=[];
-    let hour;
-    $(".timepicker").picktim({
-                                mode: 'h12',
-                                defaultValue: '00:00',
-                                icons: {
-                                        up: 'zmdi zmdi-chevron-up',
-                                        down: 'zmdi zmdi-chevron-down'
-                                    }
-                            });
-
-
-
-        $("#weekCal").weekLine({
-        mousedownSel: false,
-        onChange: function () {
-            let get_cycles = [];
-                $("#selectedDays").html(
-                        $(this).weekLine('getSelected')
-                );
-
-                for(let i =0;i<$('.selectedDay').length;i++){
-                    get_cycles.push(document.getElementsByClassName("selectedDay").item(i).innerHTML);
-                }
-        }
-        });
-
+    
         function save_cycle(){
-            for(let i =0;i<$('.selectedDay').length;i++){
-                get_cycles.push(document.getElementsByClassName("selectedDay").item(i).innerHTML);
-            }
-            let new_hour = document.getElementById("new_hour").value+":00";
-            
-            if(get_cycles.length == 0){
-                document.getElementById("select_days").setAttribute("style","display:block");
-            }else{
-            $.ajax({
-                url:"/device/new_cycle",
-                method:"POST",
-                data:{
-                    day:get_cycles,
-                    hour:new_hour,
-                    duration:document.getElementById("new_duration").value,
-                    status:document.getElementById("cycle_status").getAttribute("class")
-                }
-            }).done(function(data){
-                get_cycles = [];
-                location.replace("/");
-            }).fail(function(err){
-                console.log(err);
-                get_cycles =[];
-            })
-        }
-        }
-
-        function change_status(){
-            let aux = document.getElementById("cycle_status").getAttribute("class");
-            if(aux.includes("check")){
-                document.getElementById("cycle_status").setAttribute("class","zmdi zmdi-close zmdi-hc-3x")
-            }else{
-                document.getElementById("cycle_status").setAttribute("class","zmdi zmdi-check zmdi-hc-3x")
-            }
-            
+            let test_duration = document.getElementById("test_duration").value;
+                $.ajax({
+                    url:"/system/test",
+                    method:"POST",
+                    data:{
+                        duration:test_duration
+                    }
+                }).fail(function(err){
+                    console.log(err);
+                })
         }
     </script>
 </body>
