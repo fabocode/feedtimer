@@ -8,7 +8,6 @@ function get_time(){
         url:"/time"
     }).done(function(data){
         let meridian = "AM";
-        console.log(data);
         if(parseInt(data.hour)>12){
             data.hour = parseInt(data.hour) - 12;
             meridian = "PM"

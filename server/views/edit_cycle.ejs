@@ -35,6 +35,7 @@
     <link rel="Stylesheet" href="../../../css/cleanslate.css" />
     <link rel="Stylesheet" href="../../../css/jquery.weekLine.css" />
     <link href="../../../css/timingfield.css" rel="stylesheet">
+    <link href="../../../css/picktim.css" rel="stylesheet">
 
 </head>
 
@@ -198,11 +199,14 @@
                                 <span style="display:none; color:red" id="select_days">Please select the days of the week for this cycle</span>
                             </label>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-lg-2">
                             <label>
                                 Set Hour for the Cycle: 
-                                <input type="text" name="namepicker" class="timepicker" style="border-color:#383838 !important;border: 1px !important;border-style: solid !important;"/>
+                                    <div class="timepicker" id="timepicker" style="border-color:#383838 !important;border: 1px !important;border-style: solid !important;"></div>
                             </label>
+                        </div>
+                        <div class="col-md-1">
+                            <i class="zmdi zmdi-help" data-toggle="tooltip" data-placement="right" title="Click on AM or PM to toggle between them"></i>
                         </div>
                         <div class="col-md-3">
                             <label>
@@ -256,6 +260,7 @@
 
     <!-- Jquery JS-->
     <script src="../../../vendor/jquery-3.2.1.min.js"></script>
+    <script src="../../../vendor/jquery-1.12.4.min.js"></script>
     <!-- Bootstrap JS-->
     <script src="../../../vendor/bootstrap-4.1/popper.min.js"></script>
     <script src="../../../vendor/bootstrap-4.1/bootstrap.min.js"></script>
@@ -274,7 +279,7 @@
     <script src="../../../vendor/chartjs/Chart.bundle.min.js"></script>
     <script src="../../../vendor/select2/select2.min.js">
     </script>
-    <script src="../../../js/timingfield.js"></script>
+    <script src="../../../js/picktim.js"></script>
     <script src="../../../js/jquery.weekLine.min.js"></script> 
     <!-- Main JS-->
     <script src="../../../js/main.js"></script>
@@ -285,17 +290,18 @@
     let hour;
     let weekcal;
     $( document ).ready(function() {
-        document.getElementById("new_hour").value = <%=parseInt(hour)%>
-        document.getElementById("new_minutes").value = <%=parseInt(minutes)%>
-        document.getElementById("new_seconds").value = <%=parseInt(seconds)%>
         weekcal.weekLine("setSelected", '<%=day%>');
     })
 
 
-    $("input.timepicker").timingfield({
-            timeFormat:'HH:mm:ss',
-            width:300
-    });
+    $(".timepicker").picktim({
+                                mode: 'h12',
+                                defaultValue: '<%=parseInt(hour)%>:<%=parseInt(minutes)%>',
+                                icons: {
+                                        up: 'zmdi zmdi-chevron-up',
+                                        down: 'zmdi zmdi-chevron-down'
+                                    }
+                            });
 
         weekcal = $("#weekCal").weekLine({
         mousedownSel: false,
@@ -312,28 +318,12 @@
         });
 
         function save_cycle(){
-            let new_hour = String(document.getElementById("new_hour").value),
-            new_minutes = String(document.getElementById("new_minutes").value),
-            new_seconds = String(document.getElementById("new_seconds").value);
+            let new_hour = document.getElementById("new_hour").value+":00"
 
             for(let i =0;i<$('.selectedDay').length;i++){
                 get_cycles.push(document.getElementsByClassName("selectedDay").item(i).innerHTML);
             }
             
-
-            if(new_hour.length==1){
-                new_hour = "0"+new_hour;
-            }
-
-            if(new_minutes.length==1){
-                new_minutes = "0"+new_minutes;
-            }
-
-            if(new_seconds.length==1){
-                new_seconds = "0"+new_seconds;
-            }
-
-            hour = new_hour + ":" + new_minutes + ":" + new_seconds;
             if(get_cycles.length == 0){
                 document.getElementById("select_days").setAttribute("style","display:block");
             }else{
@@ -343,7 +333,7 @@
                 data:{
                     day:'<%=day%>',
                     cycle_ID:<%=ID%>,
-                    new_hour:hour,
+                    new_hour:new_hour,
                     new_duration:document.getElementById("new_duration").value,
                     new_status:document.getElementById("cycle_status").getAttribute("class")
                 }
