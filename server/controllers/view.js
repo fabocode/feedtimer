@@ -41,9 +41,34 @@ function dashboard(req, res, next){
             return;
         }
         if(data){
+            
             obj = JSON.parse(data);
-            console.log(obj)
-            res.render('../views/index3.ejs',{config:obj});
+            
+                for(let i=0;i<obj.days_of_week.length;i++){
+                        
+                        for(let k=0;k<obj.days_of_week[i].cycles.length;k++){
+                            let aux_hour = obj.days_of_week[i].cycles[k].start.split(":");
+                            if(aux_hour[0] == 12){
+                                obj.days_of_week[i].cycles[k].start = aux_hour[0] +":"+ aux_hour[1] +":"+ aux_hour[2] + " PM";
+                            }else{
+                                if(aux_hour[0] > 12){
+                                    aux_hour[0] = parseInt(aux_hour[0]) - 12;
+                                    obj.days_of_week[i].cycles[k].start = aux_hour[0] +":"+ aux_hour[1] +":"+ aux_hour[2] + " PM";
+                                }else{
+                                    if(aux_hour[0] == 0){
+                                    aux_hour[0] = 12;
+                                    obj.days_of_week[i].cycles[k].start = aux_hour[0] +":"+ aux_hour[1] +":"+ aux_hour[2] + " AM";
+                                    }else{
+                                    obj.days_of_week[i].cycles[k].start = obj.days_of_week[i].cycles[k].start + " AM";   
+                                    }
+                                }
+                            }
+                        }
+                        
+                        
+                }
+                res.render('../views/index3.ejs',{config:obj});
+            
             return;
         }else{
             res.sendStatus(400)
