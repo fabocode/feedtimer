@@ -25,6 +25,10 @@ class jsonData():
     cycleStart = [] # contains the time for the cycle to start in HH:MM:SS
     cycleDuration = []  # time that will going to hold the 'on' task
 
+    testStatus = False 
+    testDuration = '0'
+    fullPath = "/home/pi/feedtimer/server/device_config/device_config.json" # path file to read/write
+
     def cleanDataList(self):    # clean the lists for new incoming data
         del jsonData.checkDay[:]
         del jsonData.day2Check[:]
@@ -37,13 +41,22 @@ class jsonData():
             jsonData.cycleDuration.append(i["duration"]) # set each input into the duration list
         print "day {} \nstart {} \nand duration {}, \n".format(jsonData.day2Check, jsonData.cycleStart, jsonData.cycleDuration)
 
+    def checkTest(self, data):
+        data = data["test"]
+        if data["status"] == True or data["status"] == "true":
+            jsonData.testStatus = True
+            jsonData.testDuration = data["duration"]
+        else:
+            jsonData.testStatus = False
+            
     def jsonData(self): # function to read, parse and sort the json file
-        fullPath = "/home/pi/feedtimer/server/device_config/device_config.json" # path file to read
-        if not os.path.exists(fullPath):    # if a json file not exists
+        
+        if not os.path.exists(jsonData.fullPath):    # if a json file not exists
             print("no json file")
         else:   # if a json file exists
-            with open(fullPath) as jsonFile:    # open the json fie
+            with open(jsonData.fullPath) as jsonFile:    # open the json fie
                 data = json.load(jsonFile)  # save json string into 'data' variable
+                self.checkTest(data)        # check for enabled tests in json file
                 sortedData = dict(data)
                 sortedData['days_of_week'] = sorted(data['days_of_week'], key=lambda x : x['cycles'], reverse=False)
                 for day in data['days_of_week']:
@@ -76,10 +89,22 @@ class jsonData():
                 self.saveData(jsonData.checkDay)    # save data into lists for analysis
                 print("starts {} \nduration {}".format(jsonData.cycleStart, jsonData.cycleDuration))
             else:   # there's no plan for today
-                currentTime().time()
+                currentTime().time()    # read current day
                 print "no plans for {}".format(currentTime().nameDay)
+    
+    def writeJson(data):
+        if not os.path.exists(jsonData.fullPath):    # if a json file not exists
+            print("no json file")
+        else:   # if a json file exists
+            jsonData.testStatus = False 
+            with open(jsonData.fullPath, "r+") as jsonFile:
+                data = json.load(jsonFile)
+                test = data["test"]
+                test["status"] = jsonData.testStatus   
+                jsonFile.seek(0)    # rewind
+                json.dump(data, jsonFile)
+                jsonFile.truncate()
 
     def compareTimes(self, time1, time2):   # function to compare two time strings HH:MM:SS
         FMT = '%H:%M:%S'    # format for the output 
         return str(datetime.strptime(time2, FMT) - datetime.strptime(time1, FMT))
-
