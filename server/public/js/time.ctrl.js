@@ -7,8 +7,27 @@ function get_time(){
         method:"GET",
         url:"/time"
     }).done(function(data){
+        let meridian = "AM";
+        console.log(data);
+        if(parseInt(data.hour)>12){
+            data.hour = parseInt(data.hour) - 12;
+            meridian = "PM"
+        }
+
+        if(data.hour.length==1){
+            data.hour="0"+String(data.hour);
+        }
+
+        if(data.minutes.length==1){
+            data.minutes="0"+String(data.minutes);
+        }
+
+        if(data.seconds.length==1){
+            data.seconds="0"+String(data.seconds);
+        }
+
         document.getElementById("real_time").innerHTML="";
-        document.getElementById("real_time").innerHTML=data;
+        document.getElementById("real_time").innerHTML=data.week_day+" "+data.day+"/"+data.month+"/"+data.year+" "+data.hour+":"+data.minutes+":"+data.seconds+" "+meridian;
         tt = timer_function();
     })
 }
