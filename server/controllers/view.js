@@ -18,7 +18,7 @@ function system_test(req,res,next){
 function change_system_hour(req, res, next){
     var d = new Date(),
         month = '' + (d.getMonth() + 1),
-        hours = d.getHours(),
+        hours = d.get[0],
         minutes = d.getMinutes(),
         seconds = d.getSeconds(),
         day = '' + d.getDate(),
@@ -50,7 +50,7 @@ function dashboard(req, res, next){
             obj = JSON.parse(data);
             
                 for(let i=0;i<obj.days_of_week.length;i++){
-                        
+                    sorting_by_hour(obj.days_of_week[i].cycles);
                         for(let k=0;k<obj.days_of_week[i].cycles.length;k++){
                             let aux_hour = obj.days_of_week[i].cycles[k].start.split(":");
                             if(aux_hour[0] == 12){
@@ -67,11 +67,13 @@ function dashboard(req, res, next){
                                     obj.days_of_week[i].cycles[k].start = obj.days_of_week[i].cycles[k].start + " AM";   
                                     }
                                 }
-                            }
+                            }                            
+                            
                         }
                         
                         
                 }
+                
                 res.render('../views/index3.ejs',{config:obj});
             
             return;
@@ -102,12 +104,12 @@ function edit_cycle(req, res, next){
             
             for(let i = 0;i<obj.days_of_week.length;i++){
                 if(obj.days_of_week[i].day == day){
-                    console.log(obj.days_of_week[i]);
+                    
                     for(let j = 0;j<obj.days_of_week[i].cycles.length;j++){
                         if(obj.days_of_week[i].cycles[j].ID == cycle_ID){
-                            console.log(obj.days_of_week[i].cycles[j]);
+                            
                             let hour_format = obj.days_of_week[i].cycles[j].start.split(":");
-                            console.log(hour_format)
+                            
                             res.render('../views/edit_cycle.ejs',{
                                 day:obj.days_of_week[i].day,
                                 hour:hour_format[0],
@@ -117,7 +119,7 @@ function edit_cycle(req, res, next){
                                 status:obj.days_of_week[i].cycles[j].status,
                                 ID:obj.days_of_week[i].cycles[j].ID
                             });
-                            console.log("finished");
+                            
                             return;
                             break;
                         }
@@ -130,4 +132,25 @@ function edit_cycle(req, res, next){
             return;
         }
     });
+}
+
+function sorting_by_hour(array){
+    
+    array.sort(function (lhs, rhs)  {
+        var results;
+        lhs = lhs.start.split(":");
+        rhs = rhs.start.split(":");
+        results = parseInt(lhs[0]) > parseInt(rhs[0]) ? 1 : parseInt(lhs[0]) < parseInt(rhs[0]) ? -1 : 0; 
+    
+        if (results === 0)
+            results = parseInt(lhs[1]) > parseInt(rhs[1]) ? 1 : parseInt(lhs[1]) < parseInt(rhs[1]) ? -1 : 0;
+    
+        if (results === 0)
+            results = parseInt(lhs[2]) > parseInt(rhs[2]) ? 1 : parseInt(lhs[2]) < parseInt(rhs[2]) ? -1 : 0;
+    
+        return results;
+    })
+
+    
+
 }
