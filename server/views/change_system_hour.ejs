@@ -210,13 +210,14 @@
                         <div class="col-lg-4">
                             <lable>
                                 Select A Date:<br>
-                                <input type="text" id="datepicker" style="border-color:#383838 !important;border: 1px !important;border-style: solid !important;">
+                                <input type="text" id="datepicker" style="border-color:#383838 !important;border: 1px !important;border-style: solid !important;" readonly="true">
                             </lable>
                         </div>
                         <div class="col-lg-2">
                             <label>
                                 Set Hour for the System: 
                                 <div class="timepicker" id="timepicker" style="border-color:#383838 !important;border: 1px !important;border-style: solid !important;"></div>
+                                <span style="display:none; color:red" id="select_hour">Please select the hour for the cycle</span>
                             </label>
                         </div>
                         <div class="col-md-1">
@@ -304,8 +305,8 @@
     
         function save_cycle(){
             let date = datepicker.datepicker().val();
-            hour = document.getElementById("new_hour").value+":00";
-
+            hour = document.getElementById("new_hour").value;
+            
             if(hour){
                 console.log(hour);
                 $.ajax({
@@ -313,13 +314,15 @@
                     method:"POST",
                     data:{
                         day:date,
-                        hour:hour
+                        hour:hour+":00"
                     }
                 }).done(function(data){
                     location.replace("/");
                 }).fail(function(err){
                     console.log(err);
                 })
+            }else{
+                document.getElementById("select_hour").setAttribute("style","display:block");
             }
         }
 
