@@ -4731,8 +4731,6 @@ section {
 /* ----- Footer ----- */
 .copyright {
     text-align: center;
-    padding: 60px 0;
-    padding-top: 20px;
 }
 
 .copyright p {
@@ -4962,7 +4960,6 @@ section {
     min-height: 50px;
     height: 120px;
     overflow: hidden;
-    margin-bottom: 40px;
 }
 
 @media (min-width: 992px) and (max-width: 1199px) {
