@@ -252,6 +252,7 @@ function get_config(req, res, next){
             for(let i=0;i<obj.days_of_week.length;i++){
                 for(let j=0;j<obj.days_of_week.length;j++){
                     if(obj.days_of_week[i].day == days[j]){
+                        sorting_by_hour(obj.days_of_week[i].cycles);
                         for(let k=0;k<obj.days_of_week[i].cycles.length;k++){
                             let aux_hour = obj.days_of_week[i].cycles[k].start.split(":");
                             if(aux_hour[0] == 12){
@@ -311,4 +312,25 @@ function save_config(new_config){
     fs.writeFileSync('device_config/device_config.json', JSON.stringify(new_config));
     console.log("saved");
     return;
+}
+
+function sorting_by_hour(array){
+    
+    array.sort(function (lhs, rhs)  {
+        var results;
+        lhs = lhs.start.split(":");
+        rhs = rhs.start.split(":");
+        results = parseInt(lhs[0]) > parseInt(rhs[0]) ? 1 : parseInt(lhs[0]) < parseInt(rhs[0]) ? -1 : 0; 
+    
+        if (results === 0)
+            results = parseInt(lhs[1]) > parseInt(rhs[1]) ? 1 : parseInt(lhs[1]) < parseInt(rhs[1]) ? -1 : 0;
+    
+        if (results === 0)
+            results = parseInt(lhs[2]) > parseInt(rhs[2]) ? 1 : parseInt(lhs[2]) < parseInt(rhs[2]) ? -1 : 0;
+    
+        return results;
+    })
+
+    
+
 }

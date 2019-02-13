@@ -214,6 +214,7 @@
                             <label>
                                 Set Hour for the Cycle: 
                                     <div class="timepicker" id="timepicker" style="border-color:#383838 !important;border: 1px !important;border-style: solid !important;"></div>
+                                    <span style="display:none; color:red" id="select_hour">Please select the starting hour for the cycle</span>
                             </label>
                         </div>
                         <div class="col-md-1">
@@ -222,7 +223,7 @@
                         <div class="col-lg-3">
                             <label>
                                 Set Cycle Duration (in Seconds): 
-                                  <input type="number" value="0" style="width:8ch !mportant;border-color:#383838 !important;border: 1px !important;border-style: solid !important;" step="0.10" max="999" min="0" id="new_duration">
+                                  <input type="number" value="0" style="width:8ch !mportant;border-color:#383838 !important;border: 1px !important;border-style: solid !important;" step="0.10" max="999" min="0" id="new_duration" onchange="verif_duration(this)">
                             </label>
                         </div>
                         <div class="col-lg-3 align-middle">
@@ -254,7 +255,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="copyright">
-                                <p>Developed by <a href="#">AIOTIK C.A.</a></p>
+                            <p>Developed by <a href="https://www.instagram.com/aiotik_/?hl=es">AIOTIK C.A. <img src="../images/aiotik-isotipo.png" style="width:70px; height:70px"></a></p>
                             </div>
                         </div>
                     </div>
@@ -324,17 +325,19 @@
             for(let i =0;i<$('.selectedDay').length;i++){
                 get_cycles.push(document.getElementsByClassName("selectedDay").item(i).innerHTML);
             }
-            let new_hour = document.getElementById("new_hour").value+":00";
+            let new_hour = document.getElementById("new_hour").value;
             
             if(get_cycles.length == 0){
                 document.getElementById("select_days").setAttribute("style","display:block");
             }else{
+            if(new_hour){
+                get_cycles = get_cycles.filter( onlyUnique );
             $.ajax({
                 url:"/device/new_cycle",
                 method:"POST",
                 data:{
                     day:get_cycles,
-                    hour:new_hour,
+                    hour:new_hour+":00",
                     duration:document.getElementById("new_duration").value,
                     status:document.getElementById("cycle_status").getAttribute("class")
                 }
@@ -345,6 +348,9 @@
                 console.log(err);
                 get_cycles =[];
             })
+            }else{
+                document.getElementById("select_hour").setAttribute("style","display:block");
+            }
         }
         }
 
@@ -357,6 +363,21 @@
             }
             
         }
+
+        function onlyUnique(value, index, self) { 
+            return self.indexOf(value) === index;
+        }
+
+        function verif_duration(elem){
+            if(elem.value<0){
+                elem.value = 0;
+            }
+            
+            if(elem.value>999){
+                elem.value = 999;
+            }
+        }
+
     </script>
 </body>
 

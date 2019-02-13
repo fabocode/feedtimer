@@ -73,6 +73,8 @@
     this.input = $('<input>');
     this.input.addClass('time-input');
     this.input.attr('id','new_hour');
+    this.input.attr('maxlength','5');
+    this.input.attr('readonly',true);
     if (this.settings.formName !== '' && this.settings.formName !== null)
     {
         this.input.addClass('form-control');
