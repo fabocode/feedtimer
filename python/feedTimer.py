@@ -1,6 +1,7 @@
 import doorSystem as door
 import readData as get
 from time import sleep 
+import rtcTime as rtc
 
 workWeek = get.jsonData()
 currentTime = get.currentTime()
