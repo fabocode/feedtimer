@@ -9,8 +9,8 @@ function get_time(req, res, next){
     let date_minutes = String(new Date().getUTCMinutes());
     let date_seconds = String(new Date().getUTCSeconds());
     let date_day = String(new Date().getDate());
-    let date_week_day = String(new Date().getDay());
-    let date_month = String(new Date().getMonth());
+    let date_week_day = String(parseInt(new Date().getDay())-1);
+    let date_month = String(parseInt(new Date().getMonth())+1);
     let date_year = String(new Date().getFullYear());
     
     var weekday=new Array(7);
