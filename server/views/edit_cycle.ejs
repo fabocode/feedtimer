@@ -221,7 +221,7 @@
                         <div class="col-md-3">
                             <label>
                                 Set Cycle Duration (in Seconds): 
-                                  <input type="number" style="width:8ch !mportant;border-color:#383838 !important;border: 1px !important;border-style: solid !important;" step="0.10" max="999" min="0" id="new_duration" value='<%=parseFloat(duration)%>'>
+                                  <input type="number" style="width:8ch !mportant;border-color:#383838 !important;border: 1px !important;border-style: solid !important;" step="0.10" max="999" min="0" id="new_duration" value='<%=parseFloat(duration)%>' onchange="verif_duration(this)">
                             </label>
                         </div>
                         <div class="col-md-3 align-middle">
@@ -257,7 +257,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="copyright">
-                                <p>Developed by <a href="#">AIOTIK C.A.</a></p>
+                            <p>Developed by <a href="https://www.instagram.com/aiotik_/?hl=es">AIOTIK C.A. <img src="../../../images/aiotik-isotipo.png" style="width:70px; height:70px"></a></p>
                             </div>
                         </div>
                     </div>
@@ -364,6 +364,16 @@
                 document.getElementById("cycle_status").setAttribute("class","zmdi zmdi-check zmdi-hc-3x")
             }
             
+        }
+
+        function verif_duration(elem){
+            if(elem.value<0){
+                elem.value = 0;
+            }
+            console.log(elem.value);
+            if(elem.value>999){
+                elem.value = 999;
+            }
         }
     </script>
 </body>

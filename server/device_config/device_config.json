@@ -1,1 +1,1 @@
-{"days_of_week":[{"day":"Sun","cycles":[]},{"day":"Mon","cycles":[]},{"day":"Tue","cycles":[]},{"day":"Wed","cycles":[]},{"day":"Thu","cycles":[]},{"day":"Fri","cycles":[]},{"day":"Sat","cycles":[]}],"test":{"status":false,"duration":0}}
+{"days_of_week":[{"day":"Sun","cycles":[]},{"day":"Mon","cycles":[]},{"day":"Tue","cycles":[]},{"day":"Wed","cycles":[{"ID":0,"start":"00:00:00","duration":"0","status":true}]},{"day":"Thu","cycles":[]},{"day":"Fri","cycles":[]},{"day":"Sat","cycles":[]}],"test":{"status":false,"duration":0}}
