@@ -4,5 +4,5 @@
 
 cd /
 cd home/pi/feedtimer/python
-python feedTimer.py & cd ../server ; sudo node app.js
+python rtcTime.py & python feedTimer.py & cd ../server ; sudo node app.js
 
