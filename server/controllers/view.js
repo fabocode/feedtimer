@@ -18,7 +18,7 @@ function system_test(req,res,next){
 function change_system_hour(req, res, next){
     var d = new Date(),
         month = '' + (d.getMonth() + 1),
-        hours = d.get[0],
+        hours = d.getHours[0],
         minutes = d.getMinutes(),
         seconds = d.getSeconds(),
         day = '' + d.getDate(),
