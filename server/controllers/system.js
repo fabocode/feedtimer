@@ -4,7 +4,8 @@ var fs = require('fs');
 
 module.exports={
     change_hour,
-    system_test
+    system_test,
+    reset
 }
 
 function change_hour(req, res, next){
@@ -38,6 +39,10 @@ function system_test(req, res, next){
             return;
         }
     });
+}
+
+function reset(req, res, next){ 
+    shell.exec('sudo reboot');
 }
 
 function save_config(new_config){
