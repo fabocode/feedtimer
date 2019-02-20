@@ -51,7 +51,31 @@
                             <img src="../images/icon/logo-white.png" alt="CoolAdmin" />
                         </a>
                     </div>
-                    
+                    <div class="header__navbar">
+                        <ul class="list-unstyled">
+                            <li>
+                                <a href="/add/cycle">
+                                    <i class="zmdi zmdi-plus"></i>Add a New Cycle
+                                    <span class="bot-line"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/change_system_hour">
+                                    <i class="zmdi zmdi-time"></i>
+                                    <span class="bot-line"></span>Change System Hour</a>
+                            </li>
+                            <li>
+                                <a href="/system_test">
+                                    <i class="zmdi zmdi-alert-circle-o"></i>
+                                    <span class="bot-line"></span>Test Opening System</a>
+                            </li>
+                            <li>
+                                <a href="" onclick="system_reboot()">
+                                    <i class="zmdi zmdi-power"></i>
+                                    <span class="bot-line"></span>Reboot System</a>
+                            </li>
+                        </ul>
+                    </div>
                     <div class="header__tool">
                         <div class="header-button-item has-noti js-item-menu">
                             <i class="zmdi zmdi-notifications"></i>
@@ -97,10 +121,41 @@
                         <a class="logo" href="/">
                             <img src="../images/icon/logo-white.png" alt="CoolAdmin" />
                         </a>
-                        
+                        <button class="hamburger hamburger--slider" type="button">
+                            <span class="hamburger-box">
+                                <span class="hamburger-inner"></span>
+                            </span>
+                        </button>
                     </div>
                 </div>
             </div>
+            <nav class="navbar-mobile">
+                <div class="container-fluid">
+                    <ul class="navbar-mobile__list list-unstyled">
+                        <li>
+                            <a href="/add/cycle">
+                                <i class="zmdi zmdi-plus"></i>Add a New Cycle
+                                <span class="bot-line"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/change_system_hour">
+                                <i class="zmdi zmdi-time"></i>
+                                <span class="bot-line"></span>Change System Hour</a>
+                        </li>
+                        <li>
+                            <a href="/system_test">
+                                <i class="zmdi zmdi-alert-circle-o"></i>
+                                <span class="bot-line"></span>Test Opening System</a>
+                        </li>
+                        <li>
+                            <a href="" onclick="system_reboot()">
+                                <i class="zmdi zmdi-power"></i>
+                                <span class="bot-line"></span>Reboot System</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
         </header>
         <div class="sub-header-mobile-2 d-block d-lg-none">
             <div class="header__tool">
@@ -163,54 +218,6 @@
                 </div>
             </section>
             <!-- END WELCOME-->
-
-            <!-- STATISTIC-->
-            <section class="statistic statistic2">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-6 col-lg-3">
-                            <a href="/">
-                                <div class="statistic__item statistic__item--blue">
-                                    <h2 class="number">Go back to the Dashboard</h2>
-                                    <div class="icon">
-                                        <i class="zmdi zmdi-assignment"></i>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-md-6 col-lg-3">
-                            <a href="/add/cycle">
-                                <div class="statistic__item statistic__item--gray">
-                                    <h2 class="number">Add a New Cycle</h2>
-                                    <div class="icon">
-                                        <i class="zmdi zmdi-plus"></i>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-md-6 col-lg-3">
-                            <a href="/change_system_hour">
-                                <div class="statistic__item statistic__item--green">
-                                    <h2 class="number">Change System Hour</h2>
-                                    <div class="icon">
-                                        <i class="zmdi zmdi-time"></i>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-md-6 col-lg-3">
-                            <div onclick="system_reboot()" style="cursor:pointer">
-                                <div class="statistic__item statistic__item--red">
-                                    <h2 class="number">Reboot System</h2>
-                                    <div class="icon">
-                                        <i class="zmdi zmdi-power"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
 
             <section class="statistic statistic2">
                 <div class="container">
