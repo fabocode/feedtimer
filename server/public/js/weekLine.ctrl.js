@@ -20,6 +20,9 @@ $("#weekCal").weekLine({
                 console.log(data);
                 document.getElementById("table_body").innerHTML="";
                 document.getElementById("table_body").innerHTML=data;
+            }).fail(function(err){
+                document.getElementById("table_body").innerHTML="";
+                document.getElementById("table_body").innerHTML="<tr class='tr-shadow'><td></td><td></td><td class='text-right'><span>No cycles configured</span></td></tr>"
             })
     }
 });
