@@ -275,7 +275,14 @@ function get_config(req, res, next){
                     }
                 }
             }
-            res.render('../views/partials/table.ejs',{config:aux_obj});
+            for(let i = 0; i<aux_obj.days_of_week.length;i++){
+                if(aux_obj.days_of_week[i].cycles.length>0){
+                    res.render('../views/partials/table.ejs',{config:aux_obj});
+                    return;
+                }
+            }
+            res.sendStatus(404);
+            return;
         }else{
             for(let i=0;i<obj.days_of_week.length;i++){
                         
@@ -300,10 +307,17 @@ function get_config(req, res, next){
                 
                 
         }
-            res.render('../views/partials/table.ejs',{config:obj});
+        for(let i = 0; i<obj.days_of_week.length;i++){
+            if(obj.days_of_week[i].cycles.length>0){
+                res.render('../views/partials/table.ejs',{config:obj});
+                return;
+            }
+        }
+        res.sendStatus(404);
+        return;
         }
         
-        return;
+        
     });
 }
 

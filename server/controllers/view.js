@@ -46,7 +46,7 @@ function dashboard(req, res, next){
             return;
         }
         if(data){
-            
+            let aux = false;
             obj = JSON.parse(data);
             
                 for(let i=0;i<obj.days_of_week.length;i++){
@@ -73,8 +73,17 @@ function dashboard(req, res, next){
                         
                         
                 }
+
+                for(let i = 0; i<obj.days_of_week.length;i++){
+                    if(obj.days_of_week[i].cycles.length>0){
+                        aux = true;
+                        break;
+                    }
+                }
                 
-                res.render('../views/index3.ejs',{config:obj});
+                res.render('../views/index3.ejs',{config:obj, are_cycles:{
+                                                                        status:aux
+                                                                            }});
             
             return;
         }else{
