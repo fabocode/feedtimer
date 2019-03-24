@@ -10,5 +10,7 @@ def setSystClock(time): # set the system clock
     timeGoal = str("sudo date -s " + '"' + time + '"')  # set string to input systemclock with time as parameter
     subprocess.call(timeGoal, shell = True)             # call process to set the systemclock time 
 
+#try: 
 setSystClock(read())    # set system clock time with time readed from rtc module
-
+#except subprocess.CalledProcessError:
+#    setSystClock(read())    # set system clock time with time readed from rtc module
