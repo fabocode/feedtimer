@@ -11,6 +11,11 @@ def install_prereqs():
 	os.system('pip3 install flask pyopenssl')
 	os.system('clear')
 
+def install_node():
+	os.system('clear')
+	os.system('curl -sL https://deb.nodesource.com/setup_10.x | sudo bash -')
+	os.system('sudo apt install nodejs')
+
 def copy_configs(wpa_enabled_choice):
 	os.system('mkdir /usr/lib/raspiwifi')
 	os.system('mkdir /etc/raspiwifi')

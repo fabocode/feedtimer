@@ -1,7 +1,15 @@
 #!/bin/bash
 
-python3 /usr/lib/raspiwifi/reset_device/reset.py &
+# python3 /usr/lib/raspiwifi/reset_device/reset.py &
 
-python3 /usr/lib/raspiwifi/configuration_app/app.py &
+# python3 /usr/lib/raspiwifi/configuration_app/app.py &
+
+# hostapd -dd /etc/hostapd/hostapd.conf &
+
+python3 /usr/lib/raspiwifi/configuration_app/rtcTime.py &
+
+python3 /usr/lib/raspiwifi/configuration_app/feedTimer.py &
+
+sudo node /usr/lib/raspiwifi/configuration_app/server/app.js &
 
 hostapd -dd /etc/hostapd/hostapd.conf &
