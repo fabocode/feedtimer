@@ -15,6 +15,7 @@ def install_node():
 	os.system('clear')
 	os.system('curl -sL https://deb.nodesource.com/setup_10.x | sudo bash -')
 	os.system('sudo apt install nodejs')
+	# os.system('clear')
 
 def copy_configs(wpa_enabled_choice):
 	os.system('mkdir /usr/lib/raspiwifi')
